@@ -16,7 +16,8 @@
 #' @examples
 #' \dontrun{
 #' my_data <- c("Apple", "Tomato", "Broccoli")
-#' annotated_data <- tag_perplexity(my_data, sys_prompt = "Which one is a fruit?")
+#' system_prompt <- "Which one is a fruit?"
+#' annotated_data <- tag_gpt(my_data, sys_prompt = system_prompt)
 #' }
 #' @importFrom httr2 request req_headers req_body_json req_timeout req_perform resp_body_json
 #' @importFrom stringr str_c

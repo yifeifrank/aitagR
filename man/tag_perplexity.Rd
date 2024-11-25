@@ -43,6 +43,7 @@ The annotated responses are saved as a CSV file.
 \examples{
 \dontrun{
 my_data <- c("Apple", "Tomato", "Broccoli")
-annotated_data <- tag_perplexity(my_data, sys_prompt = "Which one is a fruit?")
+system_prompt <- "Which one is a fruit?"
+annotated_data <- tag_gpt(my_data, sys_prompt = system_prompt)
 }
 }

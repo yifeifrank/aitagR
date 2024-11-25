@@ -1,12 +1,12 @@
-Package: aitag
+Package: aitagR
 Title: Annotate Text Data Using AI APIs
-Version: 1.3.0
+Version: 1.3.3
 Authors@R: person("Yifei", "Zhu", , "frankyifei@connect.hku.hk", role = c("aut", "cre"))
 Description: This package provides functions to annotate text data using various AI APIs, including OpenAI's GPT, Anthropic's Claude, Perplexity AI, and Oobabooga. The main functions send text data to the respective APIs and save the responses as CSV files in a directory structure. Users can provide custom instructions and control various parameters to customize the behavior of the AI models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports:
   httr2,
   dplyr,

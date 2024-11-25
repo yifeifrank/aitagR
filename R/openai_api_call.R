@@ -12,11 +12,12 @@
 #' @param verbose Logical. If TRUE, prints progress and error messages. Default is TRUE.
 #' @param storage Logical. If TRUE, saves the annotated responses as a CSV file. Default is TRUE.
 #' @param rate_limit Numeric. The rate limit for API requests in seconds. Default is 0.6s.
+#' @param response_format A list specifying the desired response format (e.g., JSON schema). Default is NULL.
 #' @return A character vector containing the annotated responses from the GPT API.
 #' The function also saves the annotated responses as a CSV file in the "LLMoutput/columnname/model/.csv" path.
 #' @examples
 #' \dontrun{
-#' my_data <- tibble(c("Apple", "Tomato", "Broccoli"))
+#' my_data <- c("Apple", "Tomato", "Broccoli")
 #' system_prompt <- "Which one is a fruit?"
 #' annotated_data <- tag_gpt(my_data, sys_prompt = system_prompt)
 #' }
@@ -33,7 +34,8 @@ tag_gpt <- function(user_prompt,
                     model = "gpt-3.5-turbo-0125",
                     verbose = TRUE,
                     storage = TRUE,
-                    rate_limit = 0.6) {
+                    rate_limit = 0.6,
+                    response_format = NULL){
 
   # Ensure the API URL is complete
   api_url <- stringr::str_c(api_url, "/v1/chat/completions")
@@ -57,16 +59,23 @@ tag_gpt <- function(user_prompt,
     while (!success && attempt <= max_attempts) {
       base::Sys.sleep(rate_limit) # Sleep to avoid rate limiting
       tryCatch({
+        body_content <- list(
+          model = model,
+          temperature = temperature,
+          messages = list(
+            list(role = "system", content = sys_prompt[index]),
+            list(role = "user", content = to_annotate_text)
+          )
+        )
+
+        # Add response_format if provided
+        if (!is.null(response_format)) {
+          body_content$response_format <- response_format
+        }
+
         response <- httr2::request(api_url) |>
           httr2::req_headers(`Content-Type` = "application/json", `Authorization` = authorization) |>
-          httr2::req_body_json(list(
-            model = model,
-            temperature = temperature,
-            messages = list(
-              list(role = "system", content = sys_prompt[index]),
-              list(role = "user", content = to_annotate_text)
-            )
-          )) |>
+          httr2::req_body_json(body_content) |>
           httr2::req_timeout(60000) |> # 60 seconds timeout
           httr2::req_perform()
 

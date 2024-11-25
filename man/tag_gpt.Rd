@@ -13,7 +13,8 @@ tag_gpt(
   model = "gpt-3.5-turbo-0125",
   verbose = TRUE,
   storage = TRUE,
-  rate_limit = 0.6
+  rate_limit = 0.6,
+  response_format = NULL
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ tag_gpt(
 \item{storage}{Logical. If TRUE, saves the annotated responses as a CSV file. Default is TRUE.}
 
 \item{rate_limit}{Numeric. The rate limit for API requests in seconds. Default is 0.6s.}
+
+\item{response_format}{A list specifying the desired response format (e.g., JSON schema). Default is NULL.}
 }
 \value{
 A character vector containing the annotated responses from the GPT API.
@@ -45,7 +48,7 @@ The annotated responses are saved as a CSV file.
 }
 \examples{
 \dontrun{
-my_data <- tibble(c("Apple", "Tomato", "Broccoli"))
+my_data <- c("Apple", "Tomato", "Broccoli")
 system_prompt <- "Which one is a fruit?"
 annotated_data <- tag_gpt(my_data, sys_prompt = system_prompt)
 }
