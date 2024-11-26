@@ -35,6 +35,7 @@ tag_gpt <- function(user_prompt,
                     verbose = TRUE,
                     storage = TRUE,
                     rate_limit = 0.6,
+                    top_p = 0.9,
                     response_format = NULL){
 
   # Ensure the API URL is complete
@@ -62,6 +63,7 @@ tag_gpt <- function(user_prompt,
         body_content <- list(
           model = model,
           temperature = temperature,
+          top_p = top_p,
           messages = list(
             list(role = "system", content = sys_prompt[index]),
             list(role = "user", content = to_annotate_text)
@@ -82,8 +84,11 @@ tag_gpt <- function(user_prompt,
         if (response$status_code < 400) {
           response_content <- httr2::resp_body_json(response)
           result <- response_content$choices[[1]]$message$content
-          success <- TRUE
-          if (verbose) {
+        if (length(result) == 0) {
+            result <- NA_character_  # or some other default value
+        }
+        success <- TRUE
+        if (verbose) {
             base::message("status_id: ", index, " of ", total, "\n", "sys_prompt: ", sys_prompt[index], "\n", "user_prompt: ", to_annotate_text)
             base::message("ChatGPT: ", result, "\n")
           }
@@ -153,3 +158,5 @@ tag_gpt <- function(user_prompt,
   # Return the vector of annotations
   return(annotations)
 }
+
+
