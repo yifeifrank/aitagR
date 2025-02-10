@@ -1,6 +1,6 @@
 # aitag
 
-aitag is an R package that provides a convenient way to annotate text data using OpenAI's GPT models. It is designed to assist researchers and data analysts in extracting information from large numbers of political documents or any other text data at scale.
+aitag is an R package that provides a convenient way to annotate text data using OpenAI compatible models. It is designed to assist researchers and data analysts in extracting information from large numbers of political documents or any other text data at scale.
 
 
 ## Features
